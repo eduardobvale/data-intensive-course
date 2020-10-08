@@ -13,7 +13,9 @@ MATCH (p:Person)-[a:ACTED_IN]->(m:Movie) RETURN p.name, a.roles, m.title
 
 ## C4
 
-MATCH (p:Person {name: "Keanu Reeves"})-[a:ACTED_IN]->(m:Movie {title: "The Matrix"}) RETURN p.name, a.roles, m.title
+MATCH (p:Person {name: "Keanu Reeves"})-[a:ACTED_IN]->(m:Movie {title: "The Matrix"}) 
+WHERE single(x IN a.roles WHERE x = "Neo")
+RETURN p.name, a.roles, m.title
 
 ## C5
 
@@ -30,7 +32,7 @@ MATCH (p:Person) WHERE p.born > 0  RETURN p ORDER BY p.born ASC  LIMIT 5
 MATCH (hanks:Person{name: "Tom Hanks"})-[:ACTED_IN]->(m:Movie),
 (atores:Person)-[:ACTED_IN]->(m)
 WHERE
-(hanks.born-atores.born) > 0
+hanks.born > atores.born
 RETURN atores
 
 ## C8
@@ -38,7 +40,7 @@ RETURN atores
 MATCH (fox:Person{name: "Matthew Fox"})-[:ACTED_IN]->(m:Movie),
 (atores:Person)-[:ACTED_IN]->(m)
 WHERE
-(fox.born-atores.born) > 0
+fox.born > atores.born
 RETURN atores.name, (fox.born-atores.born) 
 
 ## C9
